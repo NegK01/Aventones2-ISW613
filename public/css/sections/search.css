@@ -1,0 +1,6 @@
+.search-form .form-row {
+    margin-bottom: var(--spacing-md);
+}
+.search-form .form-column {
+    flex: 1;
+}

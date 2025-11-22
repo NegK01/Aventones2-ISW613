@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Models;
+
+use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\Model;
+use RuntimeException;
+
+class ReservationModel extends Model
+{
+    protected $table = 'reservas';
+    protected $primaryKey = 'id_reserva';
+    protected $returnType = 'array';
+    protected $allowedFields = [
+        'id_ride',
+        'id_chofer',
+        'id_cliente',
+        'fecha',
+        'id_estado',
+    ];
+
+    protected $useTimestamps = false;
+
+    public function crearReserva(array $data): int
+    {
+        try {
+            $this->insert($data, true);
+            return (int) $this->getInsertID();
+        } catch (DatabaseException $e) {
+            $errorCode = $this->db->error()['code'] ?? $e->getCode();
+
+            if ($errorCode === 1062) {
+                throw new RuntimeException('Ya se realizo la solicitud.');
+            }
+
+            throw $e;
+        }
+    }
+
+    public function actualizarEstado(int $reservationId, int $state): bool
+    {
+        return $this->update($reservationId, ['id_estado' => $state]);
+    }
+
+    public function obtenerReservasPorUsuario(int $roleId, int $userId): array
+    {
+        $builder = $this->select(
+            "reservas.*, DATE_FORMAT(reservas.fecha, '%Y-%m-%d %H:%i') AS fechaReserva, " .
+                "rides.nombre AS nombreRide, rides.origen, rides.destino, vehiculos.marca, vehiculos.modelo, vehiculos.anio"
+        )
+            ->join('rides', 'rides.id_ride = reservas.id_ride')
+            ->join('vehiculos', 'vehiculos.id_vehiculo = rides.id_vehiculo');
+
+        switch ($roleId) {
+            case 2: // Chofer
+                $builder->join('usuarios AS cliente', 'cliente.id_usuario = reservas.id_cliente')
+                    ->select('cliente.nombre AS nombreUsuario, cliente.apellido AS apellidoUsuario')
+                    ->where('reservas.id_chofer', $userId);
+                break;
+            case 3: // Pasajero
+                $builder->join('usuarios AS chofer', 'chofer.id_usuario = reservas.id_chofer')
+                    ->select('chofer.nombre AS nombreUsuario, chofer.apellido AS apellidoUsuario')
+                    ->where('reservas.id_cliente', $userId);
+                break;
+            default:
+                $builder->join('usuarios AS chofer', 'chofer.id_usuario = reservas.id_chofer', 'left')
+                    ->join('usuarios AS cliente', 'cliente.id_usuario = reservas.id_cliente', 'left')
+                    ->select(
+                        'chofer.nombre AS nombreChofer, chofer.apellido AS apellidoChofer, ' .
+                            'cliente.nombre AS nombreCliente, cliente.apellido AS apellidoCliente'
+                    );
+                break;
+        }
+
+        return $builder->findAll();
+    }
+
+    public function obtenerReservaPorId(int $reservationId): ?array
+    {
+        $reserva = $this->select(
+            "reservas.*, DATE_FORMAT(reservas.fecha, '%Y-%m-%d %H:%i') AS fechaReserva, " .
+                "rides.nombre AS nombreRide, rides.origen, rides.destino, rides.detalles, " .
+                "vehiculos.marca, vehiculos.modelo, vehiculos.anio, vehiculos.color, " .
+                "chofer.nombre AS nombreChofer, chofer.apellido AS apellidoChofer, chofer.telefono AS telefonoChofer, " .
+                "cliente.nombre AS nombreCliente, cliente.apellido AS apellidoCliente, cliente.telefono AS telefonoCliente"
+        )
+            ->join('rides', 'rides.id_ride = reservas.id_ride')
+            ->join('vehiculos', 'vehiculos.id_vehiculo = rides.id_vehiculo')
+            ->join('usuarios AS chofer', 'chofer.id_usuario = reservas.id_chofer', 'left')
+            ->join('usuarios AS cliente', 'cliente.id_usuario = reservas.id_cliente', 'left')
+            ->where('reservas.id_reserva', $reservationId)
+            ->first();
+
+        return $reserva ?: null;
+    }
+}

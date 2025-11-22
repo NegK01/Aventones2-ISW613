@@ -1,0 +1,91 @@
+.rideDetails-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.driver-info {
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--color-panel);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.driver-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: var(--spacing-md);
+}
+
+.ride-info {
+    width: 100%;
+    max-width: 800px;
+    background-color: var(--color-panel);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+.ride-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.ride-general-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-lg);
+}
+
+.ride-general-table th,
+.ride-general-table td {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.ride-general-table th {
+    width: 40%;
+    background-color: var(--color-panel-light);
+    font-weight: 600;
+}
+
+.vehicle-info {
+    margin-top: var(--spacing-lg);
+}
+
+.vehicle-info p {
+    margin-bottom: var(--spacing-sm);
+}
+
+.action-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-lg);
+}
+
+.vehicle-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--spacing-lg);
+}
+
+.vehicle-info-table th,
+.vehicle-info-table td {
+    padding: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+}
+
+.vehicle-info-table th {
+    width: 40%;
+    background-color: var(--color-panel-light);
+    font-weight: 600;
+}

@@ -1,0 +1,31 @@
+.form-group {
+    margin-bottom: var(--spacing-md);
+}
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 500;
+}
+.form-input,
+.form-select {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-panel-light);
+    color: var(--color-text);
+    font-size: 1rem;
+}
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+}
+.form-row {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+.form-column {
+    flex: 1;
+}

@@ -1,0 +1,31 @@
+/* Cosas bases de cada html */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+:root {
+    --color-background: #121212;
+    --color-panel: #1e1e1e;
+    --color-panel-light: #2d2d2d;
+    --color-accent: #00b8a9;
+    --color-accent-hover: #00a399;
+    --color-text: #f5f5f5;
+    --color-text-secondary: #a0a0a0;
+    --color-border: #333333;
+    --color-error: #e74c3c;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+body {
+    background-color: var(--color-background);
+    color: var(--color-text);
+    min-height: 100vh;
+}

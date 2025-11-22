@@ -1,0 +1,40 @@
+.hidden {
+    display: none;
+}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.green-badge {
+    background-color: rgba(39, 174, 96, 0.2);
+    color: #27ae60;
+}
+.yellow-badge {
+    background-color: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+}
+.red-badge {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+}
+.message {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    white-space: pre-line; /* para que permita usar \n */
+}
+.message-success {
+    color: var(--color-accent);
+}
+.message-error {
+    color: var(--color-error);
+}
