@@ -32,9 +32,10 @@ class MailService
             $this->email->setFrom($this->fromEmail, $this->fromName ?: 'Aventones');
         }
 
-        $verificationUrl = $this->baseUrl . '/verify?token=' . urlencode($usuario['token']);
+        $verificationUrl = $this->baseUrl . '/verification?token=' . urlencode($usuario['token']);
 
-        $this->email->setTo($usuario['correo'], $usuario['nombre'] ?? '');
+        //$this->email->setTo($usuario['correo'], $usuario['nombre'] ?? '');
+        $this->email->setTo([$usuario['correo'] => $usuario['nombre'] ?? '']);
         $this->email->setSubject('Verificacion de cuenta');
         $this->email->setMessage(
             "Para verificar su cuenta ingrese a este link:<br><br>" .

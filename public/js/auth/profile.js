@@ -14,19 +14,19 @@ document.addEventListener("DOMContentLoaded", async (e) => {
 async function CargarUsuario() {
     try {
         //creamos solicitud
-        const response = await fetch(baseUrl + "auth/me");
+        const response = await fetch('profile/information');
 
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
 
-        const data = await response.json();
+        const result = await response.json();
 
-        if (!data.success || data.user === null) {
-            throw new Error(data.error || "Respuesta inválida del servidor");
+        if (!result.success || result.user === null) {
+            throw new Error(result.error || "Respuesta inválida del servidor");
         }
 
-        const user = data.user;
+        const user = result.user;
 
         profileHeader.querySelector("#image").src =
             user.fotografia || defaultImage;
@@ -53,7 +53,7 @@ profileForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const formData = new FormData(profileForm);
-    const url = baseUrl + "auth/update";
+    const url = "profile/update";
 
     try {
         // esperar una respuesta de la url
