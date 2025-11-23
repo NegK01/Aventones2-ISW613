@@ -10,6 +10,7 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     // COMPARTIDO (Guest - Admin - Driver - Passenger)
     $routes->get('search',         'RideController::showSearch',             ['roles' => ['guest', 'driver', 'passenger']]);
     $routes->get('auth/logout',    'AuthController::logout',                 ['roles' => ['admin', 'driver', 'passenger']]);
+    $routes->post('auth/register', 'AuthController::register',               ['roles' => ['guest', 'admin']]);
     $routes->get('reservations',   'ReservationController::showReservation', ['roles' => ['driver', 'passenger']]);
     $routes->get('details',        'RideController::showDetails',            ['roles' => ['driver', 'passenger']]);
     $routes->post('ride/search',   'RideController::search',                 ['roles' => ['guest', 'driver', 'passenger']]);
@@ -25,7 +26,6 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('verification',   'AuthController::showVerification', ['roles' => ['guest']]);
     // Funcionalidades
     $routes->post('auth/login',       'AuthController::login',            ['roles' => ['guest']]);
-    $routes->post('auth/register',    'AuthController::register',         ['roles' => ['guest']]);
     $routes->get('auth/verification', 'AuthController::verifyAccount',    ['roles' => ['guest']]);
 
     // ADMIN
@@ -33,7 +33,7 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('adminForm',      'UserController::showAdminForm',    ['roles' => ['admin']]);
     // Funcionalidades
     $routes->post('user/status',   'UserController::changeStatus',     ['roles' => ['admin']]);
-    $routes->get('user/users',     'UserController::allUsers',         ['roles' => ['admin']]);
+    $routes->post('user/users',     'UserController::allUsers',         ['roles' => ['admin']]);
 
     // DRIVER
     $routes->get('rides',          'RideController::showRide',         ['roles' => ['driver']]);

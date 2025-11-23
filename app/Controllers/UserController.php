@@ -163,7 +163,7 @@ class UserController extends BaseController
     // metodo para obtener todos los usuarios para el dashboard de administrador
     public function allUsers()
     {
-        $estado = $this->request->getGet('statusId');
+        $estado = $this->request->getPost('statusId');
         $estado = $estado !== null ? (int) $estado : null;
 
         $usuarios = $this->userModel->obtenerTodos($estado);
