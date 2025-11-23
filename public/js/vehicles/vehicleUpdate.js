@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const form = document.getElementById('vehicle-form');
     const submitBtn = document.getElementById('submit-form-btn');
 
-    const url = '../actions/handler.php?controller=vehicles&action=mostrarVehiculo';
+    const url = 'vehicle/getById';
     const formData = new FormData(form);
 
     try {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     submitBtn.addEventListener('click', async (event) => {
         event.preventDefault();
 
-        const url = '../actions/handler.php?controller=vehicles&action=updateVehicle';
+        const url = 'vehicle/update';
         const formData = new FormData(form);
 
         try {
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             mostrarMessage('success', result.success);
             setTimeout(() => {
-                window.location.href = 'vehicles.php';
+                window.location.href = 'vehicles';
             }, 1200);
         } catch (error) {
             console.error('No se pudo editar el vehiculo: ', error);

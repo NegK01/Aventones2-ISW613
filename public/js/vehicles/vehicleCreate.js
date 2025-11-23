@@ -10,7 +10,7 @@ form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
-    const url = baseUrl + 'api/vehicles/create';
+    const url = 'vehicle/store';
 
     try {
         submitBtn.disabled = true;

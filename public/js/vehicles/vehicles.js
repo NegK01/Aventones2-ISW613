@@ -82,7 +82,7 @@
 
                 try {
                     const formData = new FormData(vehicleForm);
-                    const url = 'vehicle/getAll';
+                    const url = 'vehicle/delete';
 
                     const response = await fetch(url, {
                         method: 'POST',
