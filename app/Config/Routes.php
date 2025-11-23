@@ -36,11 +36,16 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('user/users',     'UserController::allUsers',         ['roles' => ['admin']]);
 
     // DRIVER
-    $routes->get('rides',          'RideController::showRide',         ['roles' => ['driver']]);
-    $routes->get('vehicles',       'VehicleController::showVehicle',   ['roles' => ['driver']]);
+    $routes->get('rides',           'RideController::showRide',           ['roles' => ['driver']]);
+    $routes->get('vehicles',        'VehicleController::showVehicle',     ['roles' => ['driver']]);
+    $routes->match(['get', 'post'], 'vehicleForm',    'VehicleController::showVehicleForm', ['roles' => ['driver']]);
     // Funcionalidades
-    $routes->get('vehicle/getAll', 'VehicleController::getAll',        ['roles' => ['driver']]);
-    $routes->get('ride/getAll',    'RideController::getAll',        ['roles' => ['driver']]);
+    $routes->get('vehicle/getAll',  'VehicleController::getAll',         ['roles' => ['driver']]);
+    $routes->post('vehicle/getById','VehicleController::getVehicleById', ['roles' => ['driver']]);
+    $routes->post('vehicle/store',  'VehicleController::store',          ['roles' => ['driver']]);
+    $routes->post('vehicle/update', 'VehicleController::update',         ['roles' => ['driver']]);
+    $routes->post('vehicle/delete', 'VehicleController::delete',         ['roles' => ['driver']]);
+    $routes->get('ride/getAll',     'RideController::getAll',            ['roles' => ['driver']]);
 
     // PASSENGER
     // Funcionalidades

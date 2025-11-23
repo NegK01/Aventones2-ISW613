@@ -29,6 +29,16 @@ class VehicleController extends BaseController
     public function showVehicle()
     {
         return view('vehicle/vehicles');
+    }   
+
+    public function showVehicleForm()
+    {
+        $vehicleId = $this->request->getPost('vehicleId');
+
+        
+        return view('vehicle/vehicleForm', [
+            'vehicleId' => $vehicleId
+        ]);
     }
 
     public function getAll()
@@ -42,17 +52,23 @@ class VehicleController extends BaseController
         ]);
     }
 
-    public function create()
+    public function getVehicleById()
     {
-        return view('vehicles/create');
+        $vehicleId = (int) $this->request->getPost('vehicleId');
+        $vehicle = $this->vehicleModel->obtenerVehiculoPorId($vehicleId);
+
+        return $this->respond([
+            'success' => true,
+            'vehicle' => $vehicle
+        ]);
     }
 
     public function store()
     {
         $userId = session()->get('user_id');
-        if (!$userId) {
-            return $this->respond(['error' => 'Usuario no autenticado'], 401);
-        }
+        // if (!$userId) {
+        //     return $this->respond(['error' => 'Usuario no autenticado'], 401);
+        // }
 
         $rules = [
             'vehicleBrand' => 'required',
@@ -85,15 +101,73 @@ class VehicleController extends BaseController
             'anio' => $this->request->getPost('vehicleYear'),
             'color' => $this->request->getPost('vehicleColor'),
             'placa' => $this->request->getPost('vehiclePlate'),
-            'capacidad' => $this->request->getPost('vehicleSeats'),
+            'asientos' => $this->request->getPost('vehicleSeats'),
             'id_estado' => $this->request->getPost('vehicleStatus'),
             'id_usuario' => $userId,
             'fotografia' => $photoPath
         ];
 
-        $this->vehicleModel->insert($data);
+        $this->vehicleModel->crearVehiculo($data);
 
         return $this->respond(['success' => 'Vehiculo guardado correctamente']);
+    }
+
+    public function update()
+    {
+        $vehicleId = (int) $this->request->getPost('vehicleId');
+        $userId = session()->get('user_id');
+        // if (!$userId) {
+        //     return $this->respond(['error' => 'Usuario no autenticado'], 401);
+        // }
+
+        $rules = [
+            'vehicleBrand' => 'required',
+            'vehicleModel' => 'required',
+            'vehicleYear' => 'required|integer',
+            'vehicleColor' => 'required',
+            'vehiclePlate' => 'required',
+            'vehicleSeats' => 'required|integer',
+            'vehicleStatus' => 'required|integer'
+        ];
+
+        if (!$this->validate($rules)) {
+            return $this->respond(['error' => implode('. ', $this->validator->getErrors())], 400);
+        }
+
+        $photo = $this->request->getFile('vehiclePhoto');
+        $photoPath = null;
+
+        try {
+            if ($photo && $photo->isValid() && !$photo->hasMoved()) {
+                $photoPath = $this->fileUploader->upload($photo);
+            }
+        } catch (\Throwable $e) {
+            return $this->respond(['error' => $e->getMessage()], 400);
+        }
+
+        $data = [
+            'marca' => $this->request->getPost('vehicleBrand'),
+            'modelo' => $this->request->getPost('vehicleModel'),
+            'anio' => $this->request->getPost('vehicleYear'),
+            'color' => $this->request->getPost('vehicleColor'),
+            'placa' => $this->request->getPost('vehiclePlate'),
+            'asientos' => $this->request->getPost('vehicleSeats'),
+            'id_estado' => $this->request->getPost('vehicleStatus'),
+            'id_usuario' => $userId,
+            'fotografia' => $photoPath
+        ];
+
+        $this->vehicleModel->actualizarVehiculo($vehicleId, $data);
+
+        return $this->respond(['success' => 'Vehiculo guardado correctamente']);
+    }
+
+    public function delete()
+    {
+        $vehicleId = (int) $this->request->getPost('vehicleId');
+
+        $this->vehicleModel->eliminarVehiculo($vehicleId);
+        return $this->respond(['success' => true]);
     }
 
     public function listForDropdown()

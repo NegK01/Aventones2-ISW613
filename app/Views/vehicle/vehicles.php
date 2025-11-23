@@ -5,18 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aventones - Vehiculos</title>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/layout.css">
-    <link rel="stylesheet" href="../css/utilities.css">
-    <link rel="stylesheet" href="../css/components/header.css">
-    <link rel="stylesheet" href="../css/components/buttons.css">
-    <link rel="stylesheet" href="../css/components/forms.css">
-    <link rel="stylesheet" href="../css/components/tables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/utilities.css">
+    <link rel="stylesheet" href="/css/components/header.css">
+    <link rel="stylesheet" href="/css/components/buttons.css">
+    <link rel="stylesheet" href="/css/components/forms.css">
+    <link rel="stylesheet" href="/css/components/tables.css">
 </head>
 
 <body>
     <div class="app-container">
-        <?= view('components/header.php', ['activePage' => 'vehicles']) ?>
+        <?= view('components/header', ['activePage' => 'vehicles']) ?>
+
         <main class="main-content">
             <div class="section">
                 <div class="section-header">
@@ -28,7 +29,7 @@
                             <input type="text" class="form-input" placeholder="Buscar vehiculos...">
                         </div>
                         <div class="form-column text-right">
-                            <a href="vehicleForm.php" class="btn btn-primary btn-none-decoration" vehicle-action="create">Agregar Vehiculo</a>
+                            <a href="vehicleForm" class="btn btn-primary btn-none-decoration" vehicle-action="create">Agregar Vehiculo</a>
                         </div>
                     </div>
                     <div class="table-container">
@@ -51,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <form id="vehicle-form" method="post" action="vehicleForm.php" hidden>
+            <form id="vehicle-form" method="post" action="vehicleForm" hidden>
                 <input type="hidden" name="vehicleId">
             </form>
         </main>

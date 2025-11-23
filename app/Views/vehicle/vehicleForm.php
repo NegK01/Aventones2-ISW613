@@ -7,6 +7,7 @@ $statusOptions = [
     5 => 'Inactivo',
 ];
 
+
 $pageTitle = $isEditMode ? 'Editar Vehiculo' : 'Agregar Vehiculo';
 $submitLabel = $isEditMode ? 'Actualizar Vehiculo' : 'Guardar Vehiculo';
 ?>
@@ -106,7 +107,7 @@ $submitLabel = $isEditMode ? 'Actualizar Vehiculo' : 'Guardar Vehiculo';
                             </div>
                         </div>
                         <div class="form-group text-right">
-                            <a href="<?= base_url('vehicles') ?>" class="btn btn-secondary btn-none-decoration">Cancelar</a>
+                            <a href="vehicles" class="btn btn-secondary btn-none-decoration">Cancelar</a>
                             <button id="submit-form-btn" type="submit" class="btn btn-primary"><?= $submitLabel ?></button>
                         </div>
                     </form>
@@ -115,12 +116,12 @@ $submitLabel = $isEditMode ? 'Actualizar Vehiculo' : 'Guardar Vehiculo';
         </main>
     </div>
 
-    <script src="<?= base_url('js/mostrarMensaje.js') ?>"></script>
-    <script src="<?= base_url('js/vehicles/mostrarFotoVehiculo.js') ?>"></script>
+    <script src="js/mostrarMensaje.js"></script>
+    <script src="js/vehicles/mostrarFotoVehiculo.js"></script>
     <?php if ($isEditMode) : ?>
-        <script src="<?= base_url('js/vehicles/vehicleUpdate.js') ?>"></script>
+        <script src="js/vehicles/vehicleUpdate.js"></script>
     <?php else : ?>
-        <script src="<?= base_url('js/vehicles/vehicleCreate.js') ?>"></script>
+        <script src="js/vehicles/vehicleCreate.js"></script>
     <?php endif; ?>
 </body>
 
