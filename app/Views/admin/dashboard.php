@@ -64,8 +64,8 @@
         </main>
     </div>
     <form id="user-form" method="post" action="#" hidden>
-        <input type="hidden" name="userId">
-        <input type="hidden" name="statusId">
+        <input type="hidden" id="userId" name="userId">
+        <input type="hidden" id="statusId" name="statusId">
     </form>
 
     <script src="../js/admin/admin.js"></script>

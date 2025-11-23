@@ -1,26 +1,40 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Seleccionar el elemento del filtro
-    const filtro = document.getElementById("user-status-filter");
+// Esto se usa para mandar el filtro del usuario
+const userForm = document.getElementById("user-form");
 
-    cargarUsuarios(0);
+// Seleccionar el elemento del filtro
+const filtro = document.getElementById("user-status-filter");
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    cargarUsuarios();
 
     // Agregar evento a la busqueda de usuarios mediante el filtro
     filtro.addEventListener("change", async function () {
         const selectedValue = filtro.value;
-        console.log("Filtro seleccionado:", selectedValue);
-        cargarUsuarios(selectedValue);
+
+        // Agregamos el id de los estados que queremso buscar
+        document.getElementById("statusId").value = selectedValue;
+
+        // elemento = document.getElementById("statusId").value;
+        // console.log("Filtro seleccionado:", elemento);
+
+        cargarUsuarios();
     });
 });
 
 // funcion para renderizar la tabla de usuarios con el filtro previamente seleccionado
-async function cargarUsuarios(idEstado) {
+async function cargarUsuarios() {
     const tableBody = document.getElementById("users-tbody");
-    const userForm = document.getElementById("user-form");
+
+    const formData = new FormData(userForm);
+    const url = "user/users";
 
     try {
-        const response = await fetch(
-            `../actions/handler.php?controller=auth&action=cargarUsuarios&id=${idEstado}`
-        );
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
         const result = await response.json();
 
         if (!result.success) {
@@ -106,8 +120,7 @@ async function cargarUsuarios(idEstado) {
                 userForm.statusId.value = 5; // Estado "Inactivo"
 
                 try {
-                    const url =
-                        "../actions/handler.php?controller=auth&action=cambiarEstadoUsuario";
+                    const url = "user/status";
                     const formData = new FormData(userForm);
 
                     const response = await fetch(url, {
@@ -120,8 +133,8 @@ async function cargarUsuarios(idEstado) {
                         throw new Error("Error al activar el usuario.");
                     }
 
-                    // refrescar la pagina
-                    location.reload();
+                    // Cargar otra vez la tabla
+                    filtro.dispatchEvent(new Event("change"));
                 } catch (error) {
                     console.error("Error al activar el usuario:", error);
                 }
@@ -140,8 +153,7 @@ async function cargarUsuarios(idEstado) {
                 userForm.statusId.value = 4; // Estado "Inactivo"
 
                 try {
-                    const url =
-                        "../actions/handler.php?controller=auth&action=cambiarEstadoUsuario";
+                    const url = "user/status";
                     const formData = new FormData(userForm);
 
                     const response = await fetch(url, {
@@ -154,8 +166,8 @@ async function cargarUsuarios(idEstado) {
                         throw new Error("Error al desactivar el usuario.");
                     }
 
-                    // refrescar la pagina
-                    location.reload();
+                    // Cargar otra vez la tabla
+                    filtro.dispatchEvent(new Event("change"));
                 } catch (error) {
                     console.error("Error al desactivar el usuario:", error);
                 }
@@ -174,7 +186,7 @@ async function cargarUsuarios(idEstado) {
                 userForm.statusId.value = 4; // Estado "Activo"
 
                 try {
-                    const url = "../actions/handler.php?controller=auth&action=cambiarEstadoUsuario";
+                    const url = "user/status";
                     const formData = new FormData(userForm);
 
                     const response = await fetch(url, {
@@ -187,14 +199,13 @@ async function cargarUsuarios(idEstado) {
                         throw new Error("Error al aprobar el usuario.");
                     }
 
-                    // refrescar la pagina
-                    location.reload();
+                    // Cargar otra vez la tabla
+                    filtro.dispatchEvent(new Event("change"));
                 } catch (error) {
                     console.error("Error al aprobar el usuario:", error);
                 }
             });
         });
-
     } catch (error) {
         console.error("Error al mostrar los usuarios:", error);
         tableBody.innerHTML =

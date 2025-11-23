@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         form.roleId.value = 1; // Establecer el rol de admin
         form.statusId.value = 4; // Establecer el estado de activo
 
-        const url = '../actions/handler.php?controller=auth&action=register';
+        const url = "auth/register";
         const formData = new FormData(form);
 
         try {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             mostrarMessage('success', result.success);
             setTimeout(() => {
-                window.location.href = 'adminDashboard.php';
+                window.location.href = "dashboard";
             }, 1200);
         } catch (error) {
             console.error('Error al crear usuario:', error);
