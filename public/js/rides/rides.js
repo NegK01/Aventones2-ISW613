@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         result.rides.forEach(ride => {
             const idAttr = ride.id_ride ? `data-id="${ride.id_ride}"` : '';
             // la fecha tendra un formato de horas y minutos pero no segundos, hacerlo con format
-            
+
             rows += `
                 <tr>
                     <td>${ride.nombre}</td>
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 try {
                     const formData = new FormData(rideForm);
-                    const url = '../actions/handler.php?controller=rides&action=deleteRide';
+                    const url = 'ride/delete';
 
                     const response = await fetch(url, {
                         method: 'POST',

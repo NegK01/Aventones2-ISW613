@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const vehicleSelect = document.getElementById('id_vehiculo'); // Elemento select de vehiculos
 
     // Url para obtener todos los datos del ride y rellenar el formulario
-    const url = '../actions/handler.php?controller=rides&action=mostrarRide';
+    const url = 'ride/getById';
     const formData = new FormData(form);
 
     try {
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         // construccion de url y formData para enviarlo en el fetch
         const formData = new FormData(form);
-        const url = '../actions/handler.php?controller=rides&action=updateRide';
+        const url = 'ride/update';
 
         try {
             const response = await fetch(url, {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             mostrarMessage('success', result.success);
             
             setTimeout(() => {
-                window.location.href = 'rides.php';
+                window.location.href = 'rides';
             }, 1200);
         } catch (error) {
             mostrarMessage('fatal', error.message);

@@ -33,9 +33,15 @@ class VehicleModel extends Model
         return (int) $this->getInsertID();
     }
 
-    public function getVehiclesByUser(int $userId): array
+    public function obtenerVehiculosActivosPorUsuario(int $userId): array
     {
-        return $this->obtenerVehiculosPorUsuario($userId);
+        return $this->select('vehiculos.*, estados.nombre AS estado')
+            ->join('estados', 'estados.id_estado = vehiculos.id_estado', 'left')
+            ->where('vehiculos.id_usuario', $userId)
+            ->where('vehiculos.id_estado', 4) // activos
+            ->orderBy('vehiculos.id_estado', 'ASC')
+            ->orderBy('vehiculos.id_vehiculo', 'ASC')
+            ->findAll();
     }
 
     public function actualizarVehiculo(int $vehicleId, array $data): bool

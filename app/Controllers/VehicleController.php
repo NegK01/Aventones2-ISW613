@@ -44,7 +44,7 @@ class VehicleController extends BaseController
     public function getAll()
     {
         $userId = session()->get('user_id');
-        $vehicles = $this->vehicleModel->getVehiclesByUser($userId);
+        $vehicles = $this->vehicleModel->obtenerVehiculosPorUsuario($userId);
 
         return $this->respond([
             'success' => true,
@@ -54,13 +54,13 @@ class VehicleController extends BaseController
 
     public function getVehicleById()
     {
-        $vehicleId = (int) $this->request->getPost('vehicleId');
-        $vehicle = $this->vehicleModel->obtenerVehiculoPorId($vehicleId);
+            $vehicleId = (int) $this->request->getPost('vehicleId');
+            $vehicle = $this->vehicleModel->obtenerVehiculoPorId($vehicleId);
 
-        return $this->respond([
-            'success' => true,
-            'vehicle' => $vehicle
-        ]);
+            return $this->respond([
+                'success' => true,
+                'vehicle' => $vehicle
+            ]);
     }
 
     public function store()
@@ -177,7 +177,7 @@ class VehicleController extends BaseController
             return $this->respond(['error' => 'Usuario no autenticado'], 401);
         }
 
-        $vehicles = $this->vehicleModel->getVehiclesByUser($userId);
+        $vehicles = $this->vehicleModel->obtenerVehiculosActivosPorUsuario($userId);
         return $this->respond(['success' => true, 'vehicles' => $vehicles]);
     }
 }

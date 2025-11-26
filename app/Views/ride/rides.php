@@ -30,7 +30,7 @@
                             <input type="text" class="form-input" name="search" placeholder="Buscar rides...">
                         </div>
                         <div class="form-column text-right">
-                            <a href="rideForm.php" class="btn btn-primary btn-none-decoration" data-rides-action="create">Crear Nuevo Ride</a>
+                            <a href="rideForm" class="btn btn-primary btn-none-decoration" data-rides-action="create">Crear Nuevo Ride</a>
                         </div>
                     </div>
                     <div class="table-container">
