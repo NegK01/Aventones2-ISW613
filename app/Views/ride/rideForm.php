@@ -81,9 +81,7 @@ $submitLabel = $isEditMode ? 'Actualizar Ride' : 'Publicar Ride';
                                     <label class="form-label" for="id_vehiculo">Vehiculo</label>
                                     <select id="id_vehiculo" name="id_vehiculo" class="form-select">
                                         <option value="0" disabled selected>Selecciona un vehiculo</option>
-                                        <?php foreach ($vehicles as $vehicle) : ?>
-                                            <option value="<?= $vehicle['id_vehiculo'] ?>"><?= $vehicle['marca'] . ' ' . $vehicle['modelo'] ?></option>
-                                        <?php endforeach; ?>
+                                        <!--  -->
                                     </select>
                                 </div>
                             </div>

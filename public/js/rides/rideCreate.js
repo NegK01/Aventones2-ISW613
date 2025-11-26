@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const vehicleSelect = document.getElementById('id_vehiculo'); // Elemento select de vehiculos
 
     // Url para obtener los vehiculos del usuario y cargarlos en el select
-    const url = baseUrl + 'api/vehicles/list';
+    const url = 'vehicle/listForDropdown';
 
     try {
         const response = await fetch(url);
@@ -37,9 +37,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         event.preventDefault();
 
         const formData = new FormData(form);
-        const url = baseUrl + 'api/rides/create';
+        const url = 'ride/store';
 
-        try {
+        try {   
             submitBtn.disabled = true;
             const response = await fetch(url, {
                 method: 'POST',
