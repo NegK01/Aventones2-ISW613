@@ -214,7 +214,7 @@
     </div>
     <script src="js/mostrarMensaje.js"></script>
     <script src="js/search/search.js"></script>
-    <script src="js/reserve/reserve.js"></script>
+    <script src="js/reservation/reservation.js"></script>
 </body>
 
 </html>

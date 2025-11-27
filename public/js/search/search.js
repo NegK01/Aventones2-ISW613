@@ -62,7 +62,7 @@ async function cargarRides() {
                         <td>${ride.marca} ${ride.modelo} (${ride.anio})</td>
                         <td>
                             <button class="btn btn-secondary" data-rides-action="details" ${idAttr}>Info</button>
-                            <button class="btn btn-secondary" data-rides-action="reserve" ${idAttr}>Reservar</button>
+                            <button class="btn btn-secondary" data-rides-action="reservation" ${idAttr}>Reservar</button>
                         </td>
                     </tr>
                 `;
@@ -72,8 +72,8 @@ async function cargarRides() {
         const detailsRideButtons = document.querySelectorAll(
             '[data-rides-action="details"]'
         );
-        const reserveRideButtons = document.querySelectorAll(
-            '[data-rides-action="reserve"]'
+        const reservationRideButtons = document.querySelectorAll(
+            '[data-rides-action="reservation"]'
         );
 
         detailsRideButtons.forEach((button) => {
@@ -88,7 +88,7 @@ async function cargarRides() {
             });
         });
 
-        reserveRideButtons.forEach((button) => {
+        reservationRideButtons.forEach((button) => {
             button.addEventListener("click", async (event) => {
                 event.preventDefault();
                 const rideId = button.dataset.id;
@@ -97,7 +97,7 @@ async function cargarRides() {
                 }
                 rideForm.rideId.value = rideId;
 
-                // Esta funcion es de reserve.js y se manda el id del ride desde aca
+                // Esta funcion es de reservations.js y se manda el id del ride desde aca
                 reservarRide(rideForm);
             });
         });

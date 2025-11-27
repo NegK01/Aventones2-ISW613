@@ -19,11 +19,6 @@ class VehicleController extends BaseController
     {
         $this->vehicleModel = new VehicleModel();
         $this->fileUploader = new FileUploader('assets/vehiclePhotos');
-
-        $userId = session()->get('user_id');
-        if (!$userId) {
-            return redirect()->to('/');
-        }
     }
 
     public function showVehicle()
