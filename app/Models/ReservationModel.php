@@ -93,4 +93,19 @@ class ReservationModel extends Model
 
         return $reserva ?: null;
     }
+    
+    public function obtenerPendientesSinConfirmar(int $minutes): array
+    {
+        // retornar vacio si es menor o igual a 0
+        if ($minutes <= 0) {
+            return [];
+        }
+
+        //recoger id de reserva, id de chofer, correo del chofer 
+        return $this->select('reservas.id_reserva, reservas.id_chofer, usuarios.correo')
+            ->join('usuarios', 'usuarios.id_usuario = reservas.id_chofer')
+            ->where('reservas.id_estado', 2)
+            ->where("TIMESTAMPDIFF(MINUTE, reservas.fecha, NOW()) >", $minutes)
+            ->findAll();
+    }
 }
