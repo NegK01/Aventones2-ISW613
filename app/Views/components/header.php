@@ -21,7 +21,7 @@ $role        = $session->get('idRole'); // 1 = admin, 2 = chofer, 3 = pasajero
         <!-- USUARIO ROL PASAJERO -->
         <ul class="nav-menu">
             <li><a href="<?= site_url('search'); ?>" class="<?= $activePage === 'inicio' ? 'active' : '' ?>">Inicio</a></li>
-            <li><a href="<?= site_url('reservations'); ?>" class="<?= $activePage === 'reservations' ? 'active' : '' ?>">Reservas</a></li>
+            <li><a href="<?= site_url('reservation'); ?>" class="<?= $activePage === 'reservations' ? 'active' : '' ?>">Reservas</a></li>
 
             <li class="nav-profile">
                 <a href="<?= site_url('profile'); ?>" class="<?= $activePage === 'profile' ? 'active' : '' ?>">Perfil</a>
@@ -41,8 +41,8 @@ $role        = $session->get('idRole'); // 1 = admin, 2 = chofer, 3 = pasajero
         <ul class="nav-menu">
             <li><a href="<?= site_url('search'); ?>" class="<?= $activePage === 'inicio' ? 'active' : '' ?>">Inicio</a></li>
             <li><a href="<?= site_url('rides'); ?>" class="<?= $activePage === 'rides' ? 'active' : '' ?>">Rides</a></li>
-            <li><a href="<?= site_url('vehicles'); ?>" class="<?= $activePage === 'vehicles' ? 'active' : '' ?>">Vehiculos</a></li>
-            <li><a href="<?= site_url('reservations'); ?>" class="<?= $activePage === 'reservations' ? 'active' : '' ?>">Reservas</a></li>
+            <li><a href="<?= site_url('vehicle'); ?>" class="<?= $activePage === 'vehicles' ? 'active' : '' ?>">Vehiculos</a></li>
+            <li><a href="<?= site_url('reservation'); ?>" class="<?= $activePage === 'reservations' ? 'active' : '' ?>">Reservas</a></li>
 
             <li class="nav-profile">
                 <a href="<?= site_url('profile'); ?>" class="<?= $activePage === 'profile' ? 'active' : '' ?>">Perfil</a>

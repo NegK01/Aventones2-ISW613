@@ -44,7 +44,14 @@ class RideController extends BaseController
 
     public function showDetails()
     {
-        return view('ride/details');
+
+        $rideId = $this->request->getPost('rideId');
+        $userRole = $this->request->getPost('userRole');
+
+        return view('ride/details', [
+            'rideId' => $rideId,
+            '$userRole' => $userRole,
+        ]);
     }
 
     public function getAll()

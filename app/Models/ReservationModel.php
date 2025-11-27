@@ -23,18 +23,8 @@ class ReservationModel extends Model
 
     public function crearReserva(array $data): int
     {
-        try {
-            $this->insert($data, true);
-            return (int) $this->getInsertID();
-        } catch (DatabaseException $e) {
-            $errorCode = $this->db->error()['code'] ?? $e->getCode();
-
-            if ($errorCode === 1062) {
-                throw new RuntimeException('Ya se realizo la solicitud.');
-            }
-
-            throw $e;
-        }
+        $this->insert($data, true);
+        return (int) $this->getInsertID();
     }
 
     public function actualizarEstado(int $reservationId, int $state): bool
@@ -75,23 +65,15 @@ class ReservationModel extends Model
         return $builder->findAll();
     }
 
-    public function obtenerReservaPorId(int $reservationId): ?array
+    public function obtenerReservaFiltrada($idRide, $idCliente, $idChofer): ?array
     {
-        $reserva = $this->select(
-            "reservas.*, DATE_FORMAT(reservas.fecha, '%Y-%m-%d %H:%i') AS fechaReserva, " .
-                "rides.nombre AS nombreRide, rides.origen, rides.destino, rides.detalles, " .
-                "vehiculos.marca, vehiculos.modelo, vehiculos.anio, vehiculos.color, " .
-                "chofer.nombre AS nombreChofer, chofer.apellido AS apellidoChofer, chofer.telefono AS telefonoChofer, " .
-                "cliente.nombre AS nombreCliente, cliente.apellido AS apellidoCliente, cliente.telefono AS telefonoCliente"
-        )
-            ->join('rides', 'rides.id_ride = reservas.id_ride')
-            ->join('vehiculos', 'vehiculos.id_vehiculo = rides.id_vehiculo')
-            ->join('usuarios AS chofer', 'chofer.id_usuario = reservas.id_chofer', 'left')
-            ->join('usuarios AS cliente', 'cliente.id_usuario = reservas.id_cliente', 'left')
-            ->where('reservas.id_reserva', $reservationId)
-            ->first();
-
-        return $reserva ?: null;
+        return $this->where([
+            'id_ride'   => $idRide,
+            'id_cliente'=> $idCliente,
+            'id_chofer' => $idChofer,
+            'id_estado' => 2,
+        ])
+        ->first() ?: null;
     }
     
     public function obtenerPendientesSinConfirmar(int $minutes): array

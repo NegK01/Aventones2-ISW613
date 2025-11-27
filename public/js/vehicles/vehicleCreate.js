@@ -28,7 +28,7 @@ form.addEventListener('submit', async (event) => {
 
         mostrarMessage('success', result.success);
         setTimeout(() => {
-            window.location.href = baseUrl + 'vehicles';
+            window.location.href = baseUrl + 'vehicle';
         }, 1200);
 
     } catch (error) {

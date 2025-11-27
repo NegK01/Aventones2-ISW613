@@ -11,9 +11,10 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
     $routes->get('search',              'RideController::showSearch',             ['roles' => ['guest', 'driver', 'passenger']]);
     $routes->get('auth/logout',         'AuthController::logout',                 ['roles' => ['admin', 'driver', 'passenger']]);
     $routes->post('auth/register',      'AuthController::register',               ['roles' => ['guest', 'admin']]);
-    $routes->get('reservations',        'ReservationController::showReservation', ['roles' => ['driver', 'passenger']]);
-    $routes->get('reservations/getAll', 'ReservationController::getAll',          ['roles' => ['driver', 'passenger']]);
-    $routes->post('details',            'RideController::showDetails',            ['roles' => ['driver', 'passenger']]);
+    $routes->get('reservation',         'ReservationController::showReservation', ['roles' => ['driver', 'passenger']]);
+    $routes->get('reservation/getAll',  'ReservationController::getAll',          ['roles' => ['driver', 'passenger']]);
+    $routes->match(['GET', 'POST'], 'details', 'RideController::showDetails',     ['roles' => ['driver', 'passenger']]);
+    $routes->post('reservation/update', 'ReservationController::update',          ['roles' => ['driver', 'passenger']]);
     $routes->post('ride/getById',       'RideController::getRideById',            ['roles' => ['driver', 'passenger']]);
     $routes->post('ride/search',        'RideController::search',                 ['roles' => ['guest', 'driver', 'passenger']]);
     // Relacionado a profile
@@ -44,7 +45,7 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
 
     // DRIVER
     $routes->get('rides',           'RideController::showRide',           ['roles' => ['driver']]);
-    $routes->get('vehicles',        'VehicleController::showVehicle',     ['roles' => ['driver']]);
+    $routes->get('vehicle',         'VehicleController::showVehicle',     ['roles' => ['driver']]);
     $routes->match(['GET', 'POST'], 'rideForm',       'RideController::showRideForm',       ['roles' => ['driver']]);
     $routes->match(['GET', 'POST'], 'vehicleForm',    'VehicleController::showVehicleForm', ['roles' => ['driver']]);
     // Funcionalidades
@@ -62,4 +63,5 @@ $routes->group('', ['filter' => 'authFilter'], function ($routes) {
 
     // PASSENGER
     // Funcionalidades
+    $routes->post('reservation/store',  'ReservationController::store',   ['roles' => ['passenger']]);
 });
