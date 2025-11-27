@@ -46,4 +46,58 @@ class MailService
             log_message('error', 'Fallo envio de correo: ' . $this->email->printDebugger(['headers']));
         }
     }
+    
+    public function sendPasswordLessEmail(?array $usuario): bool
+    {
+        if (empty($usuario) || empty($usuario['correo']) || empty($usuario['tokenNoPassword'])) {
+            return false;
+        }
+
+        $this->email->clear(true);
+
+        if ($this->fromEmail) {
+            $this->email->setFrom($this->fromEmail, $this->fromName ?: 'Aventones');
+        }
+
+        $verificationUrl = $this->baseUrl . '/auth/verificationLessPassword?token=' . urlencode($usuario['tokenNoPassword']);
+
+        $this->email->setTo($usuario['correo'], $usuario['nombre'] ?? '');
+        // $this->email->setTo([$usuario['correo'], $usuario['nombre'] ?? '']);
+        $this->email->setSubject('Verificacion de cuenta');
+        $this->email->setMessage(
+            "Enlace de inicio de sesion de un solo uso:<br><br>" .
+                "<a href=\"{$verificationUrl}\">{$verificationUrl}</a>"
+        );
+
+        if (!$this->email->send(false)) {
+            log_message('error', 'Fallo envio de correo: ' . $this->email->printDebugger(['headers']));
+            return false;
+        }
+
+        return true;
+    }
+
+    public function sendNotificationMail(string $correo): bool
+    {
+        if (empty($correo)) {
+            return false;
+        }
+
+        $this->email->clear(true);
+
+        if ($this->fromEmail) {
+            $this->email->setFrom($this->fromEmail, $this->fromName ?: 'Aventones');
+        }
+
+        $this->email->setTo($correo);
+        $this->email->setSubject('Notificación de reservas pendientes');
+        $this->email->setMessage('Posee solicitudes de reservas pendientes de confirmación.');
+
+        if (!$this->email->send(false)) {
+            log_message('error', 'Fallo envio de correo: ' . $this->email->printDebugger(['headers']));
+            return false;
+        }
+
+        return true;
+    }
 }

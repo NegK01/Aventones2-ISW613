@@ -44,6 +44,7 @@
                         </div>
                     </form>
                     <div class="auth-footer">
+                        <p> <a href="<?= site_url('forgotPassword'); ?>" class="auth-link">¿Olvidaste tu contraseña?</a> </p>
                         <p>
                             ¿No tienes una cuenta?
                             <a href="<?= site_url('register'); ?>" class="auth-link">Regístrate</a>

@@ -21,6 +21,7 @@ class UserModel extends Model
         'contrasena',
         'id_estado',
         'token',
+        'tokenNoPassword',
         'fechaDeRegistro',
     ];
 
@@ -79,6 +80,7 @@ class UserModel extends Model
     public function obtenerPorCorreo(string $correo): ?array
     {
         return $this->select('id_usuario, id_rol, contrasena, id_estado')
+            // return $this->select('id_usuario, id_rol, contrasena, id_estado, correo, nombre, tokenNoPassword')
             ->where('correo', $correo)
             ->first() ?: null;
     }
@@ -97,6 +99,25 @@ class UserModel extends Model
         $this->where('token', $token)
             ->where('id_estado', 2)
             ->set(['id_estado' => 4, 'token' => null])
+            ->update();
+
+        return $user['correo'];
+    }
+    
+    public function loginPasswordLess(string $token): ?string
+    {
+        $user = $this->select('correo')
+            ->where('tokenNoPassword', $token)
+            ->where('id_estado', 4)
+            ->first();
+
+        if (empty($user)) {
+            return null;
+        }
+
+        $this->where('tokenNoPassword', $token)
+            ->where('id_estado', 4)
+            ->set(['tokenNoPassword' => null])
             ->update();
 
         return $user['correo'];

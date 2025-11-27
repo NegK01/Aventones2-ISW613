@@ -52,6 +52,11 @@ class AuthController extends BaseController
         return view('auth/verification');
     }
 
+    public function showforgotPassword()
+    {
+        return view('auth/forgotPassword');
+    }
+
     // metodo para realizar el registro de un usuario 
     public function register()
     {
@@ -203,5 +208,75 @@ class AuthController extends BaseController
             'success' => false,
             'error'   => 'No se encontro el token enviado',
         ], 400);
+    }
+    public function sendPasswordLessEmail()
+    {
+        $email    = strtolower(trim($this->request->getPost('email') ?? ''));
+        if (empty($email)) {
+            return $this->respond(['error' => 'El correo es obligatorio.'], 400);
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->respond(['error' => 'Correo invalido'], 400);
+        }
+
+        $usuario = $this->userModel->obtenerPorCorreo($email); // obtener el usuario segun correo, solo trae ids
+        if ($usuario === null) {
+            return $this->respond(['error' => 'No se pudo encontrar una cuenta con el correo proporcionado.'], 404);
+        }
+
+        if ((int) $usuario['id_estado'] !== 4) {
+            return $this->respond(['error' => 'Tu cuenta esta inactiva. Contacta a un administrador.'], 400);
+        }
+
+        $token = bin2hex(random_bytes(16));
+        $saved = $this->userModel->actualizarUsuario((int) $usuario['id_usuario'], [
+            'tokenNoPassword' => $token,
+        ]);
+
+        if (!$saved) {
+            return $this->respond(['error' => 'No se pudo preparar el enlace de acceso. Intenta nuevamente.'], 500);
+        }
+
+        $usuario['correo'] = $email;
+        $usuario['tokenNoPassword'] = $token;
+
+        if ($this->mailService->sendPasswordLessEmail($usuario)) {
+            return $this->respond(['success' => 'Enlace de acceso enviado correctamente. Revisa tu correo.']);
+        }
+
+        return $this->respond(['error' => 'No se pudo enviar el email. Intenta nuevamente.'], 500);
+    }
+
+    // metodo para iniciar sesion sin password
+    public function verifyPasswordLess()
+    {
+        $token = trim((string) $this->request->getGet('token')); // obtener token de la url
+        if (empty($token)) {
+            // return $this->respond(['error' => 'No se envio ningun token'], 400);
+            return redirect()->to(site_url('forgotPassword'))->with('error', 'Enlace invalido.');
+        }
+
+        // obtener el correo segun el token, tambien se limpia el campo del token de less password una vez utilizado
+        $email = $this->userModel->loginPasswordLess($token);
+        if ($email === null) {
+            return redirect()->to(site_url('forgotPassword'))->with('error', 'El enlace ya fue utilizado o expiro.');
+        }
+
+        $usuario = $this->userModel->obtenerPorCorreo($email); // obtener el usuario segun correo
+        if ($usuario === null) {
+            return redirect()->to(site_url('forgotPassword'))->with('error', 'No encontramos la cuenta asociada al enlace.');
+        }
+
+        // crear la session del usuario 
+        session()->set([
+            'user_id' => (int) $usuario['id_usuario'],
+            'idRole'  => (int) $usuario['id_rol'],
+        ]);
+
+        // admin posee un home llamado dashboard, el home de choferes y pasajeros es search
+        $redirectPath = (int) $usuario['id_rol'] === 1 ? 'dashboard' : 'search';
+
+        return redirect()->to(site_url($redirectPath));
     }
 }
