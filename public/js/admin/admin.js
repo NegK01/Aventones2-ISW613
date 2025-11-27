@@ -4,9 +4,14 @@ const userForm = document.getElementById("user-form");
 // Seleccionar el elemento del filtro
 const filtro = document.getElementById("user-status-filter");
 
+//elementos necesarios para cambiar de tab en el dashboard de admin
+const tabs = document.querySelectorAll(".tab");
+const contents = document.querySelectorAll(".tab-content");
+
 document.addEventListener("DOMContentLoaded", function () {
 
     cargarUsuarios();
+    cargarBusquedas();
 
     // Agregar evento a la busqueda de usuarios mediante el filtro
     filtro.addEventListener("change", async function () {
@@ -15,10 +20,21 @@ document.addEventListener("DOMContentLoaded", function () {
         // Agregamos el id de los estados que queremso buscar
         document.getElementById("statusId").value = selectedValue;
 
-        // elemento = document.getElementById("statusId").value;
-        // console.log("Filtro seleccionado:", elemento);
-
         cargarUsuarios();
+    });
+
+    // Listener que verifica si quiere cambiar de tab
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            tabs.forEach((t) => t.classList.remove("active"));
+            contents.forEach((c) => c.classList.remove("active"));
+
+            tab.classList.add("active");
+            const target = document.getElementById(tab.dataset.tab);
+            if (target) {
+                target.classList.add("active");
+            }
+        });
     });
 });
 
@@ -210,5 +226,55 @@ async function cargarUsuarios() {
         console.error("Error al mostrar los usuarios:", error);
         tableBody.innerHTML =
             '<tr><td colspan="7">Error al cargar los usuarios.</td></tr>';
+    }
+}
+
+// funcion para cargar todo el historial de busquedas de rides
+async function cargarBusquedas() {
+    const tableBody = document.getElementById("reports-tbody");
+
+    const url = "reports/Searches";
+
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.error || "Error al cargar el historial.");
+        }
+
+        if (result.searches.length === 0) {
+            tableBody.innerHTML =
+                '<tr><td colspan="8">No hay historial de busquedas.</td></tr>';
+            return;
+        }
+
+        let rows = "";
+
+        result.searches.forEach((busqueda) => {
+
+            const usuario = busqueda.nombre && busqueda.apellido ? `${busqueda.nombre} ${busqueda.apellido}` : "Invitado";
+
+            rows += `
+                <tr>
+                    <td>${busqueda.fechaHoraFormateada}</td>
+                    <td>${busqueda.id_usuario ?? "NA"}</td>
+                    <td>${usuario}</td>
+                    <td>${busqueda.origen ?? "NA"}</td>
+                    <td>${busqueda.destino ?? "NA"}</td>
+                    <td>${busqueda.resultados}</td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = rows;
+
+    } catch (error) {
+        console.error("Error al mostrar al historial:", error);
+        tableBody.innerHTML =
+            '<tr><td colspan="7">Error al cargar el historial.</td></tr>';
     }
 }

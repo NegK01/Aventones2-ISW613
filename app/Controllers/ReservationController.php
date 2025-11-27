@@ -16,11 +16,6 @@ class ReservationController extends BaseController
     public function __construct()
     {
         $this->reservationModel = new ReservationModel();
-
-        $userId = session()->get('user_id');
-        if (!$userId) {
-            return redirect()->to('/');
-        }
     }
 
     public function showReservation()

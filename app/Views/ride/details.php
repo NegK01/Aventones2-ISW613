@@ -1,3 +1,9 @@
+
+<?php
+$rideId = $_POST['rideId'] ?? null;
+$isReserveMode = $_POST['userRole'] ?? false;
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -51,18 +57,16 @@
                     </div>
                     <div class="action-buttons-container">
                         <a href="javascript:window.history.back()" class="btn btn-secondary back-btn">Regresar</a>
-                        <!-- <?php
-                        // if (!$isReserveMode) {
-                        //     echo '<button type="submit" id="reserve-btn" class="btn btn-primary reserve-btn">Reservar asiento</button>';
-                        // }
-                        ?> -->
+                        <?php
+                        if (!$isReserveMode) {
+                            echo '<button type="submit" id="reserve-btn" class="btn btn-primary reserve-btn">Reservar asiento</button>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
             <form id="id-form" method="post" action="#" hidden>
-                <!-- <input type="hidden" name="rideId" value="
-                 <?php //echo $rideId ?>
-                "> -->
+                <input type="hidden" id="rideId" name="rideId" value="<?php echo $rideId ?>">
             </form>
         </main>
     </div>

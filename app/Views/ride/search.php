@@ -206,6 +206,10 @@
                     </div>
                 </div>
             </div>
+
+            <form id="ride-form" method="post" action="details" hidden>
+                <input type="hidden" name="rideId">
+            </form>
         </main>
     </div>
     <script src="js/mostrarMensaje.js"></script>

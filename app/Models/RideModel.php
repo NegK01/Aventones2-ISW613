@@ -86,7 +86,7 @@ class RideModel extends Model
         return $builder->findAll();
     }
 
-    public function getRides($filters = [], $sort = 'date-asc')
+    public function getRides($filters = [])
     {
         $builder = $this->select(
             "rides.*, DATE_FORMAT(rides.fechaHora, '%Y-%m-%d %H:%i') AS fechaHoraFormateada, " .
@@ -101,28 +101,6 @@ class RideModel extends Model
 
         if (!empty($filters['destination'])) {
             $builder->like('rides.destino', $filters['destination']);
-        }
-
-        switch ($sort) {
-            case 'date-desc':
-                $builder->orderBy('rides.fechaHora', 'DESC');
-                break;
-            case 'origin-asc':
-                $builder->orderBy('rides.origen', 'ASC');
-                break;
-            case 'origin-desc':
-                $builder->orderBy('rides.origen', 'DESC');
-                break;
-            case 'destination-asc':
-                $builder->orderBy('rides.destino', 'ASC');
-                break;
-            case 'destination-desc':
-                $builder->orderBy('rides.destino', 'DESC');
-                break;
-            case 'date-asc':
-            default:
-                $builder->orderBy('rides.fechaHora', 'ASC');
-                break;
         }
 
         return $builder->findAll();
