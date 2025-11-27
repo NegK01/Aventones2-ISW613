@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (tableRideBody && tableVehicleBody) {
+
+        console.log(document.getElementById("rideId").value);
+
         cargarDetalles();
     }
 
@@ -37,9 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function cargarReservas() {
     try {
-        const response = await fetch(
-            "../actions/handler.php?controller=reserves&action=mostrarReservas"
-        );
+        const response = await fetch("reservations/getAll");
 
         const result = await response.json();
 
@@ -93,7 +94,7 @@ async function cargarReservas() {
 
                 actionButtons += `
                         <a href="#" class="btn btn-secondary btn-none-decoration" reserve-action="details" ${idRide}>Info</a>
-                        <button class="btn btn-secondary" reserve-action="decline" ${idReserve} data-state="3">Rechazar</button>
+                        <button class="btn btn-secondary" reserve-action="decline" ${idReserve} data-state="3">Cancelar</button>
                     `;
 
             } else if (numeroEstado == 2) {
@@ -214,8 +215,7 @@ async function cargarReservas() {
 async function cargarDetalles() {
     try {
         const formData = new FormData(idForm);
-        const url =
-            "../actions/handler.php?controller=rides&action=mostrarRide";
+        const url = "ride/getById";
 
         const response = await fetch(url, {
             method: "POST",

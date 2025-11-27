@@ -30,6 +30,11 @@ class UserController extends BaseController
         return view('admin/adminForm');
     }
 
+    public function showReports()
+    {
+        return view('admin/reports');
+    }
+
     public function showProfile()
     {
         return view('user/profile');

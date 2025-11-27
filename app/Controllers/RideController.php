@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\RideModel;
+use App\Models\SearchModel;
 use App\Models\VehicleModel;
 use CodeIgniter\API\ResponseTrait;
 
@@ -12,12 +13,14 @@ class RideController extends BaseController
 
     protected $rideModel;
     protected $vehicleModel;
+    protected $searchModel;
     protected $request; // esto ya CI lo maneja internamente en el BaseController pero intelephense muestra un error visual de que no lo pudo encontrar, entonces se le pone la variable pero no tiene ningun efecto real, 
 
     public function __construct()
     {
         $this->rideModel = new RideModel();
         $this->vehicleModel = new VehicleModel();
+        $this->searchModel = new SearchModel();
     }
 
     public function showSearch()
@@ -73,16 +76,21 @@ class RideController extends BaseController
 
     public function search()
     {
-        $origin = $this->request->getGet('origin');
-        $destination = $this->request->getGet('destination');
-        $sort = $this->request->getGet('sort') ?? 'date-asc';
+        $origin = $this->request->getPost('search-origin');
+        $destination = $this->request->getPost('search-destination');
 
         $filters = [
             'origin' => $origin,
             'destination' => $destination
         ];
 
-        $rides = $this->rideModel->getRides($filters, $sort);
+        $rides = $this->rideModel->getRides($filters);
+
+        $results = count($rides);
+
+        if (array_filter($filters)) {
+            $this->saveSearch($origin, $destination, $results);
+        }
 
         return $this->respond([
             'success' => true,
@@ -90,15 +98,35 @@ class RideController extends BaseController
         ]);
     }
 
-    public function create()
+    public function saveSearch($origin, $destination, $results)
     {
-        $userId = session()->get('user_id');
-        if (!$userId) {
-            return redirect()->to('/login');
-        }
+        $userId = session()->get('user_id') ?? null;
 
-        $vehicles = $this->vehicleModel->getVehiclesByUser($userId);
-        return view('rides/create', ['vehicles' => $vehicles]);
+        $origin = trim($origin) ?: null;
+        $destination = trim($destination) ?: null; 
+
+        date_default_timezone_set('America/Costa_Rica');
+        $fechaHora = date("Y-m-d H:i");
+
+        $data = [
+            'id_usuario' => $userId,
+            'origen' => $origin,
+            'destino' => $destination,
+            'fechaHora' => $fechaHora,
+            'resultados' => $results,
+        ];
+
+        $this->searchModel->crearHistorial($data);
+    }
+
+    public function getSearches()
+    {
+        $searches = $this->searchModel->getSearches();
+
+        return $this->respond([
+            'success' => true,
+            'searches' => $searches,
+        ]);
     }
 
     public function store()
