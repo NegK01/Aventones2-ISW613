@@ -36,15 +36,13 @@ class AuthFilter implements FilterInterface
                 return; // permitir
             }
 
-            // Ruta NO permite guest → redirigir a login
+            // Ruta NO permite guest -> redirigir a login
             return redirect()->to('/login');
         }
 
-        // ==========================================================
-        // CASO B: USUARIO LOGUEADO
-        // ==========================================================
+        // Segundo caso de usuario logueado
 
-        // Si su rol NO está permitido → al home
+        // Si su rol NO está permitido -> al home
         if (!in_array($currentRole, $allowedRoles)) {
             switch ($currentRole) {
                 case 'admin':
@@ -62,7 +60,7 @@ class AuthFilter implements FilterInterface
             }
         }
 
-        // Si está permitido → dejarlo pasar
+        // Si está permitido -> dejarlo pasar
         return;
     }
 
