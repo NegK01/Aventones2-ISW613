@@ -34,8 +34,8 @@ class MailService
 
         $verificationUrl = $this->baseUrl . '/verification?token=' . urlencode($usuario['token']);
 
-        //$this->email->setTo($usuario['correo'], $usuario['nombre'] ?? '');
-        $this->email->setTo([$usuario['correo'] => $usuario['nombre'] ?? '']);
+        $this->email->setTo($usuario['correo'], $usuario['nombre'] ?? '');
+        //$this->email->setTo([$usuario['correo'] => $usuario['nombre'] ?? '']);
         $this->email->setSubject('Verificacion de cuenta');
         $this->email->setMessage(
             "Para verificar su cuenta ingrese a este link:<br><br>" .

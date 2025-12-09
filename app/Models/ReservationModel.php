@@ -39,7 +39,8 @@ class ReservationModel extends Model
                 "rides.nombre AS nombreRide, rides.origen, rides.destino, vehiculos.marca, vehiculos.modelo, vehiculos.anio"
         )
             ->join('rides', 'rides.id_ride = reservas.id_ride')
-            ->join('vehiculos', 'vehiculos.id_vehiculo = rides.id_vehiculo');
+            ->join('vehiculos', 'vehiculos.id_vehiculo = rides.id_vehiculo')
+            ->where('rides.id_estado', '4');
 
         switch ($roleId) {
             case 2: // Chofer
